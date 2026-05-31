@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>My AI Model</title>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <!-- TensorFlow -->
+
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
+
+    <!-- Teachable Machine -->
+
+    <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest/dist/teachablemachine-image.min.js"></script>
+
+    <style>
+
+        body {
+
+            background: #ffd6ec;
+
+            font-family: Comic Sans MS;
+
+            text-align: center;
+
+            padding-top: 50px;
+        }
+
+        h1 {
+
+            font-size: 50px;
+        }
+
+        button {
+
+            background: hotpink;
+
+            color: white;
+
+            border: none;
+
+            padding: 12px 25px;
+
+            font-size: 20px;
+
+            border-radius: 15px;
+
+            cursor: pointer;
+        }
+
+        button:hover {
+
+            transform: scale(1.05);
+        }
+
+        canvas {
+
+            margin-top: 20px;
+
+            border-radius: 20px;
+
+            box-shadow: 0 0 20px rgba(0,0,0,0.2);
+        }
+
+        #label-container div {
+
+            margin: 10px;
+
+            font-size: 24px;
+
+            font-weight: bold;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <h1>✨ My AI Model ✨</h1>
+
+    <button onclick="init()">Start AI</button>
+
+    <br><br>
+
+    <div id="webcam-container"></div>
+
+    <div id="label-container"></div>
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>
