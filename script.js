@@ -10,7 +10,7 @@ let smoothedProb = 0;
 const SMOOTHING = 0.85;
 
 let currentAnimal = "";
-let audio = new Audio();
+let audio = null;
 
 // Predator mapping
 const predatorData = {
@@ -59,6 +59,9 @@ async function init() {
         videoElement.width = 300;
         videoElement.height = 300;
         videoElement.autoplay = true;
+        videoElement.playsInline = true;
+        videoElement.muted = true;
+
         videoElement.style.borderRadius = "20px";
         videoElement.style.boxShadow = "0 0 20px rgba(0,0,0,0.2)";
 
@@ -76,8 +79,7 @@ async function init() {
 
     } catch (error) {
         console.error("Full error:", error);
-        const msg = error?.message || error?.name || String(error);
-        alert("Error: " + msg + "\n\nOpen F12 Console for details.");
+        alert("Error: " + error.message);
     }
 }
 
@@ -94,16 +96,42 @@ function playPredatorSound(animal) {
 
     const data = predatorData[animal];
 
-    if (!data) return;
+    if (!data) {
+        console.log("No predator mapping for:", animal);
+        return;
+    }
 
-    audio.pause();
-    audio.currentTime = 0;
+    console.log("Playing:", data.sound);
 
-    audio = new Audio(data.sound);
+    try {
 
-    audio.play().catch(err => {
-        console.log("Audio error:", err);
-    });
+        if (audio) {
+            audio.pause();
+            audio.currentTime = 0;
+        }
+
+        audio = new Audio(data.sound);
+        audio.volume = 1.0;
+
+        audio.addEventListener("loadeddata", () => {
+            console.log("Audio loaded");
+        });
+
+        audio.addEventListener("error", (e) => {
+            console.error("Audio file error:", e);
+        });
+
+        audio.play()
+            .then(() => {
+                console.log("Sound playing");
+            })
+            .catch(err => {
+                console.error("Audio play failed:", err);
+            });
+
+    } catch (err) {
+        console.error("Audio exception:", err);
+    }
 }
 
 async function predict() {
@@ -130,6 +158,12 @@ async function predict() {
     ) {
 
         smoothedClass = max.className;
+
+        console.log(
+            "Detected:",
+            smoothedClass,
+            max.probability.toFixed(2)
+        );
 
         playPredatorSound(smoothedClass);
     }
